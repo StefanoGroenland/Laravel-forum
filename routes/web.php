@@ -38,3 +38,8 @@ Route::get("/threads/{channel}",[
     'uses' => 'ThreadsController@index',
 ]);
 Route::post('/threads/{channel}/{thread}/replies', 'RepliesController@store')->name('reply.store');
+
+Route::post("/replies/{reply}/favorites",[
+    'as' => 'favorite.store',
+    'uses' => 'FavoritesController@store',
+]);
