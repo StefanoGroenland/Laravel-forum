@@ -2,28 +2,25 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class ReadThreadsTest extends TestCase
 {
-
     use DatabaseMigrations;
+
+    protected $thread;
 
     public function setUp()
     {
         parent::setUp();
+
         $this->thread = create('App\Thread');
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function a_user_can_view_all_threads()
     {
-
         $this->get('/threads')
             ->assertSee($this->thread->title);
     }
@@ -59,7 +56,7 @@ class ReadThreadsTest extends TestCase
     /** @test */
     function a_user_can_filter_threads_by_any_username()
     {
-        $this->signIn(create('App\User', ['name' => 'JohnDoe',]));
+        $this->signIn(create('App\User', ['name' => 'JohnDoe']));
 
         $threadByJohn = create('App\Thread', ['user_id' => auth()->id()]);
         $threadNotByJohn = create('App\Thread');
@@ -72,11 +69,11 @@ class ReadThreadsTest extends TestCase
     /** @test */
     function a_user_can_filter_threads_by_popularity()
     {
-        $threadWithThreeReplies = create('App\Thread');
-        create('App\Reply', ['thread_id' => $threadWithThreeReplies->id], 3);
-
         $threadWithTwoReplies = create('App\Thread');
         create('App\Reply', ['thread_id' => $threadWithTwoReplies->id], 2);
+
+        $threadWithThreeReplies = create('App\Thread');
+        create('App\Reply', ['thread_id' => $threadWithThreeReplies->id], 3);
 
         $threadWithNoReplies = $this->thread;
 
@@ -84,6 +81,4 @@ class ReadThreadsTest extends TestCase
 
         $this->assertEquals([3, 2, 0], array_column($response, 'replies_count'));
     }
-
-
 }

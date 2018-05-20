@@ -17,29 +17,11 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get("/threads",[
-    'as' => 'threads.index',
-    'uses' => 'ThreadsController@index',
-]);
-Route::get("/threads/create",[
-    'as' => 'threads.create',
-    'uses' => 'ThreadsController@create',
-]);
-Route::get("/threads/{channel}/{thread}",[
-    'as' => 'threads.show',
-    'uses' => 'ThreadsController@show',
-]);
-Route::post("/threads",[
-    'as' => 'threads.store',
-    'uses' => 'ThreadsController@store',
-]);
-Route::get("/threads/{channel}",[
-    'as' => 'threads.channel',
-    'uses' => 'ThreadsController@index',
-]);
-Route::post('/threads/{channel}/{thread}/replies', 'RepliesController@store')->name('reply.store');
-
-Route::post("/replies/{reply}/favorites",[
-    'as' => 'favorite.store',
-    'uses' => 'FavoritesController@store',
-]);
+Route::get('/home', 'HomeController@index');
+Route::get('threads', 'ThreadsController@index');
+Route::get('threads/create', 'ThreadsController@create');
+Route::get('threads/{channel}/{thread}', 'ThreadsController@show');
+Route::post('threads', 'ThreadsController@store');
+Route::get('threads/{channel}', 'ThreadsController@index');
+Route::post('/threads/{channel}/{thread}/replies', 'RepliesController@store');
+Route::post('/replies/{reply}/favorites', 'FavoritesController@store');

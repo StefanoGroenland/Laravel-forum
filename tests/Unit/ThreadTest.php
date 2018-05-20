@@ -2,13 +2,11 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class ThreadTest extends TestCase
 {
-
     use DatabaseMigrations;
 
     protected $thread;
@@ -39,15 +37,17 @@ class ThreadTest extends TestCase
     /** @test */
     function a_thread_has_replies()
     {
-        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $this->thread->replies);
+        $this->assertInstanceOf(
+            'Illuminate\Database\Eloquent\Collection', $this->thread->replies
+        );
     }
 
     /** @test */
-    function a_thread_can_add_a_reply()
+    public function a_thread_can_add_a_reply()
     {
         $this->thread->addReply([
-            'body' => 'foobar',
-            'user_id' => 1,
+            'body' => 'Foobar',
+            'user_id' => 1
         ]);
 
         $this->assertCount(1, $this->thread->replies);

@@ -2,25 +2,22 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class CreateThreadsTest extends TestCase
 {
-
     use DatabaseMigrations;
 
     /** @test */
-    function guest_may_not_create_threads()
+    function guests_may_not_create_threads()
     {
         $this->withExceptionHandling();
 
-        $this->post('/threads')
+        $this->get('/threads/create')
             ->assertRedirect('/login');
 
-        $this->get('/threads/create')
+        $this->post('/threads')
             ->assertRedirect('/login');
     }
 
@@ -64,8 +61,7 @@ class CreateThreadsTest extends TestCase
             ->assertSessionHasErrors('channel_id');
     }
 
-    /** @test */
-    public function a_thread_can_be_published($overrides = [])
+    protected function publishThread($overrides = [])
     {
         $this->withExceptionHandling()->signIn();
 
